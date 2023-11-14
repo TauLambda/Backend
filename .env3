@@ -1,6 +1,0 @@
-PORT=8080
-NODE_ENV=development
-DB_NAME=OXXOGAS
-DB_USER=admin
-DB_PASSWORD=PruebasProyecto?,456
-DB_HOST=database-1.cf2myev5n5ny.us-east-1.rds.amazonaws.com
