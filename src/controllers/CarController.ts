@@ -29,7 +29,7 @@ class CarController extends AbstractController{
         private async getReadCars(req:Request,res:Response){
                 try{
                         let carros= await db["carro"].findAll()
-                        console.log("Usuario:", carros);
+                        console.log("Carros:", carros);
                         res.send(carros);
                 
                 }catch(error){
