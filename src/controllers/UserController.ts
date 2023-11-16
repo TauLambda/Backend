@@ -27,7 +27,7 @@ class UserController extends AbstractController{
                         let usuarios= await db["usuario"].findAll()
                         console.log("Usuario:", usuarios);
                         res.send(usuarios);
-                
+
                 }catch(error){
                         if (error instanceof Error){
                         res.status(500).send({ message: error.message });
@@ -35,7 +35,7 @@ class UserController extends AbstractController{
                         res.status(500).send({ message: "Error" });
                         }
                 }
-        
+
         }
         private async postCreateUser(req:Request,res:Response){
                 try{
@@ -45,7 +45,7 @@ class UserController extends AbstractController{
                         res.status(200).send("Registro exitoso");
                 }catch(err:any){
                         console.log("Error")
-                        res.status(500).send("Error fatal:" +err); 
+                        res.status(500).send("Error fatal:" +err);
                 }
         }
 }

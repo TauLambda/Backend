@@ -2,6 +2,8 @@ import Server from './providers/Server'
 import express from "express";
 import cors from 'cors';
 import UserController from "./controllers/UserController";
+import CardController from './controllers/CardController';
+import HistoryController from './controllers/HistoryController';
 
 const app = new Server({
 port:8080,
@@ -11,7 +13,9 @@ middlewares:[
         cors()
 ],
 controllers:[
-        UserController.getInstance()        
+        UserController.getInstance(),
+        CardController.getInstance(),
+        HistoryController.getInstance()
 ],
 env:'development'
 });
