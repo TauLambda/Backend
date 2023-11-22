@@ -24,6 +24,7 @@ class UserController extends AbstractController{
             this.router.get('/readUser',this.getReadUser.bind(this));
             this.router.get('/updateUser',this.updateUser.bind(this));
             this.router.get('/deleteUser',this.deleteUser.bind(this));
+            this.router.get('/updateCashback',this.updateUserCashback.bind(this));
             //Todas las rutas que necesite su controlador
     }
 
@@ -179,6 +180,48 @@ class UserController extends AbstractController{
         }
         }
     }
+
+    private async updateUserCashback(req: Request, res: Response) {
+        try {
+            const userID = req.body.ID_usuario;
+    
+            if (!userID) {
+                res.status(400).send({ message: "Missing user parameter (ID_usuario)" });
+                return;
+            }
+    
+            const newCashback = req.body.Cashback;
+    
+            if (!newCashback) {
+                res.status(400).send({ message: "New user information (Cashback) not found" });
+                return;
+            }
+    
+            const user = await db["usuario"].findOne({ where: { ID_usuario: userID } });
+    
+            if (!user) {
+                res.status(404).send({ message: "User not found" });
+                return;
+            }
+    
+            user.Cashback = newCashback;
+            await user.save(); // Assuming the user model has a save() method
+    
+            console.log("Updated User:", user.toJSON()); // Log the entire updated user object
+    
+            res.send({ message: "User updated successfully" });
+        } catch (error) {
+            console.error('Error updating user cashback:', error);
+    
+            if (error instanceof Error) {
+                res.status(500).send({ message: error.message });
+            } else {
+                res.status(500).send({ message: "Error updating user cashback" });
+            }
+        }
+    }
+    
+
     
 
 
