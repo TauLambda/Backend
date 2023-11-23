@@ -61,16 +61,16 @@ class UserController extends AbstractController{
     //Servicio para obtener el registro de un usuario
     private async getReadUser(req: Request, res: Response) {
         try {
-            const userCorreo = req.body.Correo;
+            const userId = req.body.ID_usuario;
 
             //Revisa si se encuentra el parámetro dentro del cuerpo
-            if (!userCorreo) {
+            if (!userId) {
                 res.status(400).send({ message: "Falta parámetro de correo" });
                 return;
             }
     
             // Obtener un registro en el que el correo sea el mismo que en la petición
-            const user = await db["usuario"].findOne({ where: { Correo: userCorreo } });
+            const user = await db["usuario"].findOne({ where: { ID_usuario: userId } });
     
             if (!user) {
                 // Si el usuario con ese correo no existe
@@ -96,10 +96,10 @@ class UserController extends AbstractController{
     private async updateUser(req: Request, res: Response) {
         try {
 
-            const userEmail = req.body.Correo;
+            const userID = req.body.ID_usuario;
 
             //Revisa si se encuentra el parámetro dentro del cuerpo
-            if (!userEmail) {
+            if (!userID) {
                 res.status(400).send({ message: "Falta parámetro de correo" });
                 return;
             }
@@ -112,7 +112,7 @@ class UserController extends AbstractController{
             }
     
             // Encuentra el registro de correo para el usuario
-            const user = await db["usuario"].findOne({ where: { Correo: userEmail } });
+            const user = await db["usuario"].findOne({ where: { ID_usuario: userID } });
     
             if (!user) {
                     // If the user with the specified email is not found, return a 404 status
@@ -144,16 +144,16 @@ class UserController extends AbstractController{
     private async deleteUser(req: Request, res: Response) {
         try {
             // Assuming you have an email parameter in the request
-            const userEmail = req.body.Correo;
+            const userID = req.body.ID_usuario;
 
-            // Check if userEmail is undefined or null
-            if (!userEmail) {
+            // Check if userID is undefined or null
+            if (!userID) {
                     res.status(400).send({ message: "Email parameter is missing" });
                     return;
             }
 
             // Find the user by email from the "usuario" table
-            const user = await db["usuario"].findOne({ where: { Correo: userEmail } });
+            const user = await db["usuario"].findOne({ where: { ID_usuario: userID } });
 
             if (!user) {
                     // If the user with the specified email is not found, return a 404 status

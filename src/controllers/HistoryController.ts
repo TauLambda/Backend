@@ -12,7 +12,7 @@ class HistoryController extends AbstractController {
     public static getInstance():AbstractController{
         if(this.instance){
             return this.instance;
-        }
+            }
         this.instance = new HistoryController('history');
         return this.instance;
     }
