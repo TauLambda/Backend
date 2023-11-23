@@ -24,6 +24,7 @@ class HistoryController extends AbstractController {
 
     }
 
+    //Servicio para encontrar el historial a través del ID del usuario
     private async getHistoryByUserId(req: Request, res: Response) {
         try {
             const userId = req.params.ID_usuario;
@@ -42,8 +43,8 @@ class HistoryController extends AbstractController {
 
     private async updateStatusByHistoryId(req: Request, res: Response) {
         try {
-            const historyId = req.body.ID_historial; // Assuming 'historyId' is the parameter name in the route
-            const newStatus = req.body.Estatus; // Assuming you send the new status in the request body
+            const historyId = req.body.ID_historial;
+            const newStatus = req.body.Estatus; 
     
             // Check if 'historyId' and 'newStatus' are provided
             if (!historyId || !newStatus) {
@@ -82,6 +83,9 @@ class HistoryController extends AbstractController {
             const { Op } = require("sequelize");
 
             let historial = await db["historial"].findOne({where: {[Op.and]: [{ ID_usuario: userId},{ Estatus: "Incompleto"}]}});
+            if (!historial) {
+                return res.status(404).send({ message: 'Pending charge not found.' });                
+            }
             console.log("Historial:", historial)
             res.send(historial);
         } catch (error) {
