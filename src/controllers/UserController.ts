@@ -22,6 +22,7 @@ class UserController extends AbstractController{
             this.router.get('/readUsers',this.getReadUsers.bind(this));
             this.router.post('/createUser',this.postCreateUser.bind(this));
             this.router.get('/readUser',this.getReadUser.bind(this));
+            this.router.get('/loginUser',this.getReadUserByEmail.bind(this));
             this.router.get('/updateUser',this.updateUser.bind(this));
             this.router.get('/deleteUser',this.deleteUser.bind(this));
             this.router.get('/updateCashback',this.updateUserCashback.bind(this));
@@ -71,6 +72,42 @@ class UserController extends AbstractController{
     
             // Obtener un registro en el que el correo sea el mismo que en la petición
             const user = await db["usuario"].findOne({ where: { ID_usuario: userId } });
+    
+            if (!user) {
+                // Si el usuario con ese correo no existe
+                res.status(404).send({ message: "Usuario no encontrado" });
+                return;
+            }
+
+            console.log("User:", user);
+    
+            // Envía la información obtenida como respuesta
+            res.send(user);
+
+        } catch (error) {
+            if (error instanceof Error) {
+                res.status(500).send({ message: error.message });
+            } else {
+                res.status(500).send({ message: "Error" });
+            }
+        }
+    }
+
+    //Servicio para obtener el registro de un usuario
+    private async getReadUserByEmail(req: Request, res: Response) {
+        try {
+            const userEmail = req.body.Correo;
+            const userPass = req.body.Contrasena;
+            const { Op } = require("sequelize");
+
+            //Revisa si se encuentra el parámetro dentro del cuerpo
+            if (!userEmail) {
+                res.status(400).send({ message: "Falta parámetro de correo" });
+                return;
+            }
+    
+            // Obtener un registro en el que el correo sea el mismo que en la petición
+            const user = await db["usuario"].findOne({where: {[Op.and]: [{ Correo: userEmail},{ Contrasena: userPass}]}});
     
             if (!user) {
                 // Si el usuario con ese correo no existe
