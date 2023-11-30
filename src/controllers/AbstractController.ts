@@ -1,32 +1,43 @@
-import {Router} from 'express';
+import { Router } from 'express'; // Importa el tipo Router desde el módulo express
 
-//Middlewares
-import ValidationErrorMiddleware from '../middlewares/validationError';
+// Middlewares
+import ValidationErrorMiddleware from '../middlewares/validationError'; // Importa el middleware de manejo de errores de validación
 
+/**
+ * Clase abstracta para definir controladores.
+ */
+export default abstract class AbstractController {
+  private _router: Router = Router(); // Instancia un objeto Router
+  private _prefix: string; // Almacena el prefijo de la ruta para el controlador
 
-export default abstract class AbstractController{
-    private _router:Router = Router();
-    private _prefix:string;
+  // Propiedad de solo lectura para acceder al prefijo
+  public get prefix(): string {
+    return this._prefix;
+  }
 
-    protected handleErrors = ValidationErrorMiddleware.handleErrors;
+  // Propiedad de solo lectura para acceder al objeto Router
+  public get router(): Router {
+    return this._router;
+  }
 
-    public get prefix():string{
-            return this._prefix;
-    }
+  /**
+   * Constructor de la clase AbstractController.
+   * @param prefix - Prefijo de la ruta para el controlador.
+   */
+  protected constructor(prefix: string) {
+    this._prefix = prefix; // Asigna el prefijo de la ruta
+    this.initRoutes(); // Inicializa las rutas del controlador
+  }
 
-    public get router():Router{
-            return this._router
-    }
+  /**
+   * Método abstracto para inicializar las rutas del controlador.
+   */
+  protected abstract initRoutes(): void;
 
-    protected constructor(prefix:string){
-            this._prefix=prefix;
-            this.initRoutes();
-
-    }
-
-    //Inicializar rutas
-    protected abstract initRoutes():void;
-    //Validar el body de la petición
-    protected abstract validateBody(type:any):any;
-
+  /**
+   * Método abstracto para validar el cuerpo de la petición.
+   * @param type - Tipo de datos para la validación del cuerpo.
+   * @returns Objeto de validación.
+   */
+  protected abstract validateBody(type: any): any;
 }
