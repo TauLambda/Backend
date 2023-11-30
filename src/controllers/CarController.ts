@@ -24,12 +24,13 @@ class CarController extends AbstractController{
                 this.router.get('/readCar',this.getReadCar.bind(this));
                 this.router.get('/updateCar',this.updateCar.bind(this));
                 this.router.get('/deleteCar',this.deleteCar.bind(this));
+                this.router.post('/userCars',this.getReadCarByUser.bind(this));
                 //Todas las rutas que necesite su controlador
         }
         private async getReadCars(req:Request,res:Response){
                 try{
                         let carros= await db["carro"].findAll()
-                        console.log("Usuario:", carros);
+                        console.log("Carros:", carros);
                         res.send(carros);
                 
                 }catch(error){
@@ -88,6 +89,43 @@ class CarController extends AbstractController{
                         res.status(500).send({ message: "Error" });
                         }
                 }
+        }
+
+        private async getReadCarByUser(req: Request, res: Response) {
+            try {
+                    // Assuming you have a correo parameter in the request
+                    const userID = req.body.ID_usuario;
+            
+                    // Check if carPlaca is undefined or null
+                    if (!userID) {
+                    res.status(400).send({ message: "User parameter is missing" });
+                    return;
+                    }
+            
+                    // Fetch a single car by Placa from the "carro" table
+                    const car = await db["carro"].findAll({ where: { ID_usuario: userID } });
+            
+                    if (!car) {
+                    // If the car with the specified Placa is not found, return a 404 status
+                    res.status(404).send({ message: "Car not found" });
+                    return;
+                    }
+            
+                    // Log the retrieved car to the console for debugging
+                    console.log("Car:", car);
+            
+                    // Send the retrieved car as a response
+                    res.send(car);
+            } catch (error) {
+                    // Handle errors
+                    if (error instanceof Error) {
+                    // If the error is an instance of the Error class, send the error message
+                    res.status(500).send({ message: error.message });
+                    } else {
+                    // If it's not an instance of Error (unexpected case), send a generic error message
+                    res.status(500).send({ message: "Error" });
+                    }
+            }
         }
 
         private async updateCar(req: Request, res: Response) {
