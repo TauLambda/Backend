@@ -24,7 +24,7 @@ class CarController extends AbstractController{
                 this.router.get('/readCar',this.getReadCar.bind(this));
                 this.router.get('/updateCar',this.updateCar.bind(this));
                 this.router.get('/deleteCar',this.deleteCar.bind(this));
-                this.router.get('/userCars',this.getReadCarByUser.bind(this));
+                this.router.post('/userCars',this.getReadCarByUser.bind(this));
                 //Todas las rutas que necesite su controlador
         }
         private async getReadCars(req:Request,res:Response){
