@@ -22,7 +22,7 @@ class UserController extends AbstractController{
             this.router.get('/readUsers',this.getReadUsers.bind(this));
             this.router.post('/createUser',this.postCreateUser.bind(this));
             this.router.get('/readUser',this.getReadUser.bind(this));
-            this.router.get('/loginUser',this.getReadUserByEmail.bind(this));
+            this.router.post('/loginUser',this.getReadUserByEmail.bind(this));
             this.router.get('/updateUser',this.updateUser.bind(this));
             this.router.get('/deleteUser',this.deleteUser.bind(this));
             this.router.get('/updateCashback',this.updateUserCashback.bind(this));
@@ -99,6 +99,8 @@ class UserController extends AbstractController{
             const userEmail = req.body.Correo;
             const userPass = req.body.Contrasena;
             const { Op } = require("sequelize");
+
+            console.log(req.body)
 
             //Revisa si se encuentra el parámetro dentro del cuerpo
             if (!userEmail) {
