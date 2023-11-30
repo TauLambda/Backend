@@ -118,62 +118,6 @@ class HistoryController extends AbstractController {
         }
     }
 
-    private async updateStatusByHistoryId(req: Request, res: Response) {
-        try {
-            const historyId = req.body.ID_historial;
-            const newStatus = req.body.Estatus;
-
-            // Check if 'historyId' and 'newStatus' are provided
-            if (!historyId || !newStatus) {
-                return res.status(400).send({ message: 'History ID and new status are required.' });
-            }
-
-            // Find the historical record by historyId
-            const historicalRecord = await db["historial"].findByPk(historyId);
-
-            // Check if the historical record exists
-            if (!historicalRecord) {
-                return res.status(404).send({ message: 'Historical record not found.' });
-            }
-
-            // Update the status
-            historicalRecord.Estatus = newStatus;
-
-            // Save the changes to the database
-            await historicalRecord.save();
-
-            // Send a success response
-            res.send({ message: 'Status updated successfully.' });
-        } catch (error) {
-            if (error instanceof Error) {
-                res.status(500).send({ message: error.message });
-            } else {
-                res.status(500).send({ message: 'Error updating status.' });
-            }
-        }
-    }
-
-
-    private async getCurrentChargeByUserId(req: Request, res: Response) {
-        try {
-            const userId = req.params.ID_usuario;
-            const { Op } = require("sequelize");
-
-            let historial = await db["historial"].findOne({where: {[Op.and]: [{ ID_usuario: userId},{ Estatus: "Incompleto"}]}});
-            if (!historial) {
-                return res.status(404).send({ message: 'Pending charge not found.' });
-            }
-            console.log("Historial:", historial)
-            res.send(historial);
-        } catch (error) {
-            if (error instanceof Error){
-                res.status(500).send({ message: error.message });
-                }else{
-                res.status(500).send({ message: "Error" });
-                }
-        }
-    }
-
     /**
    * Método para crear un nuevo registro en el historial.
    * @param req - Objeto Request de Express.
