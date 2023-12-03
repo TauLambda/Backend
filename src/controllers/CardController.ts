@@ -54,7 +54,7 @@ class CardController extends AbstractController {
     * @param req - Objeto Request de Express.
     * @param res - Objeto Response de Express.
     */
-   private async postCreateCard(req: Request, res: Response) {
+    private async postCreateCard(req: Request, res: Response) {
         try {
             const userId = req.params.ID_usuario; // Obtiene el ID del usuario desde los parámetros de la URL
 
